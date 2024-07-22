@@ -71,7 +71,7 @@ const Input = () => {
               document.activeElement === e.currentTarget
             ) {
               e.preventDefault();
-
+              
               const initialSelectrionStart = e.currentTarget.selectionStart;
               const initialSelectrionEnd = e.currentTarget.selectionEnd;
               const stringBeforeCaret = e.currentTarget.value.substring(
@@ -89,6 +89,17 @@ const Input = () => {
               e.currentTarget.selectionStart = initialSelectrionStart + 4;
               e.currentTarget.selectionEnd = initialSelectrionStart + 11;
 
+              context.setSnippet(newValue);
+            }
+            if (
+              e.key === "r" &&
+              (e.ctrlKey || e.metaKey) &&
+              document.activeElement === e.currentTarget
+            ) {
+              e.preventDefault();
+              const selection = window.getSelection()?.toString() ?? "";
+              const foo = e.currentTarget.value;
+              const newValue = foo.replaceAll(selection, "${1:example}")
               context.setSnippet(newValue);
             }
           }}
