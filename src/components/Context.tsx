@@ -2,11 +2,13 @@ import React, { createContext, useEffect, useState } from "react";
 
 export type Mode = "vscode" | "sublimetext" | "atom";
 
-interface MyContext {
+export interface MyContext {
   description: string;
   tabTrigger: string;
   snippet: string;
   mode: Mode;
+  insertVarValue: string;
+  replaceVarValue: string;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   setTabTrigger: React.Dispatch<React.SetStateAction<string>>;
   setSnippet: React.Dispatch<React.SetStateAction<string>>;
@@ -22,6 +24,8 @@ const Context = createContext<MyContext>({
   setSnippet: () => {},
   mode: "vscode",
   setMode: () => {},
+  insertVarValue: "",
+  replaceVarValue: ""
 });
 
 const url = new URL(window.location.href);
@@ -39,6 +43,10 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [tabTrigger, setTabTrigger] = useState(urlTabtrigger);
   const [snippet, setSnippet] = useState(urlSnippet);
   const [mode, setMode] = useState<Mode>(urlMode as Mode);
+  const [ insertVarIndex, setInsertVarIndex ] = useState(0)
+  const [ replaceVarIndex, setReplaceVarIndex ] = useState(1)
+  
+  const [ var$, setVar$ ] = useState(["${1:example}", "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}"])  
 
   useEffect(() => {
     const shareUrl = new URL(window.location.href);
@@ -58,7 +66,8 @@ const ContextProvider = ({ children }: ProviderProps) => {
       `${location.pathname}?${shareUrl.searchParams}`,
     );
   }, [description, tabTrigger, snippet, mode]);
-
+  const insertVarValue = var$[insertVarIndex]
+  const replaceVarValue = var$[replaceVarIndex]
   return (
     <Context.Provider
       value={{
@@ -70,6 +79,8 @@ const ContextProvider = ({ children }: ProviderProps) => {
         setSnippet,
         mode,
         setMode,
+        insertVarValue,
+        replaceVarValue,
       }}
     >
       {children}
