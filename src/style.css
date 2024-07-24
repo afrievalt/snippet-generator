@@ -285,3 +285,32 @@ body {
   right: 8px;
   bottom: 8px;
 }
+
+.variables__description {
+  font-size: x-small;
+}
+
+.variable-form {
+  position: Fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background-color: black;
+  color: whitesmoke;
+  padding: 20px;
+  
+}
+
+.variable-form fieldset {
+  border: none;
+  columns: 3;
+}
+
+.variable-form fieldset .item {
+  display: inline;
+}
+
+.variable-form fieldset label {
+  margin-left: 5px;
+}

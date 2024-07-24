@@ -3,6 +3,7 @@ import Input from "./Input";
 import Output from "./Output";
 import { Context } from "./Context";
 import { useContext } from "react";
+import VariableForm from "./Placeholders/VariableForm";
 
 const App = () => {
   const context = useContext(Context);
@@ -13,6 +14,8 @@ const App = () => {
       <div className="app__main">
         <Input />
         <Output />
+        <VariableForm />
+  
       </div>
     </div>
   );

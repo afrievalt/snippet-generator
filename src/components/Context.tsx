@@ -9,6 +9,8 @@ export interface MyContext {
   mode: Mode;
   insertVarValue: string;
   replaceVarValue: string;
+  variable: string, 
+  setVariable: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   setTabTrigger: React.Dispatch<React.SetStateAction<string>>;
   setSnippet: React.Dispatch<React.SetStateAction<string>>;
@@ -25,7 +27,11 @@ const Context = createContext<MyContext>({
   mode: "vscode",
   setMode: () => {},
   insertVarValue: "",
-  replaceVarValue: ""
+  replaceVarValue: "",
+  variable: "",
+  setVariable: () => {},
+  
+
 });
 
 const url = new URL(window.location.href);
@@ -45,6 +51,7 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [mode, setMode] = useState<Mode>(urlMode as Mode);
   const [ insertVarIndex, setInsertVarIndex ] = useState(0)
   const [ replaceVarIndex, setReplaceVarIndex ] = useState(1)
+  const [ variable, setVariable ] = useState("")
   
   const [ var$, setVar$ ] = useState(["${1:example}", "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}"])  
 
@@ -66,7 +73,7 @@ const ContextProvider = ({ children }: ProviderProps) => {
       `${location.pathname}?${shareUrl.searchParams}`,
     );
   }, [description, tabTrigger, snippet, mode]);
-  const insertVarValue = var$[insertVarIndex]
+  const insertVarValue = `$${variable}` // var$[insertVarIndex]
   const replaceVarValue = var$[replaceVarIndex]
   return (
     <Context.Provider
@@ -81,6 +88,7 @@ const ContextProvider = ({ children }: ProviderProps) => {
         setMode,
         insertVarValue,
         replaceVarValue,
+        variable, setVariable
       }}
     >
       {children}
