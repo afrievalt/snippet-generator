@@ -1,9 +1,9 @@
 import Header from "./Header";
 import Input from "./Input";
-import Output from "./Output";
 import { Context } from "./Context";
 import { useContext } from "react";
 import VariableForm from "./Placeholders/VariableForm";
+import { RightHandSide } from "./RightHandSide/RightHandSide";
 
 const App = () => {
   const context = useContext(Context);
@@ -13,7 +13,7 @@ const App = () => {
       <Header />
       <div className="app__main">
         <Input />
-        <Output />
+        <RightHandSide />
         <VariableForm />
   
       </div>
