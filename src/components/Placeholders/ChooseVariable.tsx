@@ -3,8 +3,9 @@ import { Context } from "../Context";
 import { variables } from "./variables";
 
 function ChooseVariable() {
-const context = useContext(Context);
-  const handleChange = (e) => {context.setVariable(e.target.value);
+  const context = useContext(Context);
+  const handleChange = (e) => {
+    context.setVariable(e.target.value);
   };
   return (
     <fieldset onChange={handleChange}>

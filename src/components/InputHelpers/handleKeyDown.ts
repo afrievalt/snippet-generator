@@ -46,9 +46,9 @@ const handleInsert = (e: Event, context: MyContext) => {
 
   const newValue = `${stringBeforeCaret}${context.insertVarValue}${stringAfterCaret}`;
 
-  e.currentTarget.value = newValue;
-  e.currentTarget.selectionStart = initialSelectionStart + 4;
-  e.currentTarget.selectionEnd = initialSelectionStart + 11;
+  e.currentTarget.value = newValue;  
+//  e.currentTarget.selectionStart = initialSelectionStart + 4;
+//  e.currentTarget.selectionEnd = initialSelectionStart + 11;
 
   context.setSnippet(newValue);
 };

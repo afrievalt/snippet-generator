@@ -10,6 +10,8 @@ export interface MyContext {
   insertVarValue: string;
   replaceVarValue: string;
   variable: string, 
+  modalIndex: number,
+  setModalIndex: React.Dispatch<React.SetStateAction<number>>; 
   setVariable: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   setTabTrigger: React.Dispatch<React.SetStateAction<string>>;
@@ -30,7 +32,8 @@ const Context = createContext<MyContext>({
   replaceVarValue: "",
   variable: "",
   setVariable: () => {},
-  
+  modalIndex: 1, 
+  setModalIndex: () => {}
 
 });
 
@@ -52,6 +55,7 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [ insertVarIndex, setInsertVarIndex ] = useState(0)
   const [ replaceVarIndex, setReplaceVarIndex ] = useState(1)
   const [ variable, setVariable ] = useState("")
+  const [ modalIndex, setModalIndex ] = useState(0)
   
   const [ var$, setVar$ ] = useState(["${1:example}", "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}"])  
 
@@ -88,7 +92,8 @@ const ContextProvider = ({ children }: ProviderProps) => {
         setMode,
         insertVarValue,
         replaceVarValue,
-        variable, setVariable
+        variable, setVariable,
+        modalIndex, setModalIndex 
       }}
     >
       {children}
