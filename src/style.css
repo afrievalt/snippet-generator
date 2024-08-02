@@ -305,3 +305,14 @@ body {
 .variable-form fieldset label {
   margin-left: 5px;
 }
+
+
+.app_placeholder {
+  width: 100%;
+  min-width: 100%;
+}
+
+.inline {
+  display: flex;
+  gap: 8px;
+}

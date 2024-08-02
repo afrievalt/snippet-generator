@@ -2,6 +2,7 @@ import { Context  } from "../Context";
 import { useContext  } from "react";
 import Edit from "./Edit/Edit";
 import Output from "./Output";
+import EditPlaceholder from "./EditPlaceholder/EditPlaceholder";
 
 
 const RightHandSide = () => {
@@ -19,6 +20,16 @@ const RightHandSide = () => {
           onClick={() => context.setMode("vscode")}
         >
           Output
+        </button>
+        <button
+          className={
+            context.mode === "placeholder"
+              ? "app__button app__button--sublimetext app__button--active"
+              : "app__button app__button--sublimetext"
+          }
+          onClick={() => context.setMode("placeholder")}
+        >
+          Edit Placeholder
         </button>
         <button
           className={
@@ -45,7 +56,7 @@ const RightHandSide = () => {
       <div className="app__halfbottom">
         <Output show={context.mode === "vscode"}/>       
         <Edit show={context.mode === "edit"} /> 
-        
+        <EditPlaceholder show={context.mode === "placeholder"}/>
       </div>
     </div>
   );

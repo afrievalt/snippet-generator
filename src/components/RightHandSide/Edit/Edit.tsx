@@ -33,7 +33,6 @@ function Edit(props: Props) {
     setForm({ ...form, format});
   };
   const acquireOnChange = (key: string) => (e: Event) => {
-    console.log(e);
     setForm({ ...form, [key]: e.target.value });
   };
   const newValue =

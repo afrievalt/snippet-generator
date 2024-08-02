@@ -1,6 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
 
-export type Mode = "vscode" | "sublimetext" | "atom" | "edit";
+export type Mode = "vscode" | "sublimetext" | "atom" | "edit" | "placeholder";
+
+export interface Placeholder {
+  value: string;
+  description: string;
+}
 
 export interface MyContext {
   description: string;
@@ -9,14 +14,15 @@ export interface MyContext {
   mode: Mode;
   insertVarValue: string;
   replaceVarValue: string;
-  variable: string, 
-  modalIndex: number,
-  setModalIndex: React.Dispatch<React.SetStateAction<number>>; 
+  variable: string;
+  modalIndex: number;
+  setModalIndex: React.Dispatch<React.SetStateAction<number>>;
   setVariable: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   setTabTrigger: React.Dispatch<React.SetStateAction<string>>;
   setSnippet: React.Dispatch<React.SetStateAction<string>>;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  placeholder$: Placeholder[];
 }
 
 const Context = createContext<MyContext>({
@@ -32,9 +38,9 @@ const Context = createContext<MyContext>({
   replaceVarValue: "",
   variable: "",
   setVariable: () => {},
-  modalIndex: 1, 
-  setModalIndex: () => {}
-
+  modalIndex: 1,
+  setModalIndex: () => {},
+  placeholder$: [],
 });
 
 const url = new URL(window.location.href);
@@ -52,12 +58,15 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [tabTrigger, setTabTrigger] = useState(urlTabtrigger);
   const [snippet, setSnippet] = useState(urlSnippet);
   const [mode, setMode] = useState<Mode>(urlMode as Mode);
-  const [ insertVarIndex, setInsertVarIndex ] = useState(0)
-  const [ replaceVarIndex, setReplaceVarIndex ] = useState(1)
-  const [ variable, setVariable ] = useState("")
-  const [ modalIndex, setModalIndex ] = useState(0)
-  
-  const [ var$, setVar$ ] = useState(["${1:example}", "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}"])  
+  const [insertVarIndex, setInsertVarIndex] = useState(0);
+  const [replaceVarIndex, setReplaceVarIndex] = useState(1);
+  const [variable, setVariable] = useState("");
+  const [modalIndex, setModalIndex] = useState(0);
+
+  const [placeholder$, setPlaceholder$] = useState([
+    {value: "${1:example}", description: ""},
+    {value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}", description: ""},
+  ]);
 
   useEffect(() => {
     const shareUrl = new URL(window.location.href);
@@ -74,11 +83,11 @@ const ContextProvider = ({ children }: ProviderProps) => {
         mode,
       },
       document.title,
-      `${location.pathname}?${shareUrl.searchParams}`,
+      `${location.pathname}?${shareUrl.searchParams}`
     );
   }, [description, tabTrigger, snippet, mode]);
-  const insertVarValue = `$${variable}` // var$[insertVarIndex]
-  const replaceVarValue = var$[replaceVarIndex]
+  const insertVarValue = `$${variable}`; // var$[insertVarIndex]
+  const replaceVarValue = placeholder$[replaceVarIndex];
   return (
     <Context.Provider
       value={{
@@ -92,8 +101,11 @@ const ContextProvider = ({ children }: ProviderProps) => {
         setMode,
         insertVarValue,
         replaceVarValue,
-        variable, setVariable,
-        modalIndex, setModalIndex 
+        variable,
+        setVariable,
+        modalIndex,
+        setModalIndex,
+        placeholder$,
       }}
     >
       {children}
