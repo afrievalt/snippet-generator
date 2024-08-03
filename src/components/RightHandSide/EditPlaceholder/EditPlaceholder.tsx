@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Context } from "../../Context";
 import { Div } from "../../Div";
 import VariableForm, { VARIABLE_FORM_ID } from "../../Placeholders/VariableForm";
+import { descriptionLookup } from "../../Placeholders/variables";
 
 type Props = {
   show: boolean;
@@ -35,7 +36,8 @@ function EditPlaceholder(props: Props) {
   };
   const handleSelect = (variable: string) => {
     const value = `$${variable}`
-    setForm({value, description: ""})
+    const description = descriptionLookup[variable];
+    setForm({value, description})
   }
   return (
     <div className="app_placeholder">

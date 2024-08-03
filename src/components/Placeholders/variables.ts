@@ -35,4 +35,11 @@ const variables = [
 {variable: "LINE_COMMENT", description: "Example output: in PHP //"},
 ]
 
-export {variables}
+export type DescriptionLookup = {
+    [Key: string]: string
+}
+const descriptionLookup = variables.reduce((acc: DescriptionLookup, cur) => {
+    return {...acc, [cur.variable]: cur.description}
+}, {})
+
+export {variables, descriptionLookup}

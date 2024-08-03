@@ -13,7 +13,7 @@ export interface MyContext {
   snippet: string;
   mode: Mode;
   insertVarValue: string;
-  replaceVarValue: string;
+  replaceVarValue: Placeholder;
   variable: string;
   modalIndex: number;
   setModalIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -35,7 +35,7 @@ const Context = createContext<MyContext>({
   mode: "vscode",
   setMode: () => {},
   insertVarValue: "",
-  replaceVarValue: "",
+  replaceVarValue: {value:"",description:""},
   variable: "",
   setVariable: () => {},
   modalIndex: 1,
@@ -58,7 +58,6 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [tabTrigger, setTabTrigger] = useState(urlTabtrigger);
   const [snippet, setSnippet] = useState(urlSnippet);
   const [mode, setMode] = useState<Mode>(urlMode as Mode);
-  const [insertVarIndex, setInsertVarIndex] = useState(0);
   const [replaceVarIndex, setReplaceVarIndex] = useState(1);
   const [variable, setVariable] = useState("");
   const [modalIndex, setModalIndex] = useState(0);
@@ -67,6 +66,7 @@ const ContextProvider = ({ children }: ProviderProps) => {
     {value: "${1:example}", description: ""},
     {value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}", description: ""},
   ]);
+  console.log(setPlaceholder$, setReplaceVarIndex)
 
   useEffect(() => {
     const shareUrl = new URL(window.location.href);
