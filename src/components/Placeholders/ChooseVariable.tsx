@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { ChangeEvent, useContext } from "react";
 import { Context } from "../Context";
 import { variables } from "./variables";
 
 function ChooseVariable() {
   const context = useContext(Context);
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLFieldSetElement>) => {
+    //@ts-expect-error xxx
     context.setVariable(e.target.value);
   };
   return (
