@@ -5,7 +5,7 @@ import { variables } from "./variables";
 function ChooseVariable() {
   const context = useContext(Context);
   const handleChange = (e: ChangeEvent<HTMLFieldSetElement>) => {
-    //@ts-expect-error xxx
+    ///   @ts-expect-error value is on target
     context.setVariable(e.target.value);
   };
   return (
