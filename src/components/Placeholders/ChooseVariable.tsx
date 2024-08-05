@@ -4,24 +4,32 @@ import { variables } from "./variables";
 
 function ChooseVariable() {
   const context = useContext(Context);
-  const handleChange = (e: ChangeEvent<HTMLFieldSetElement>) => {
-    ///   @ts-expect-error value is on target
+  const handleChange =  (e: ChangeEvent<HTMLInputElement>) => {
     context.setVariable(e.target.value);
   };
+  
   return (
-    <fieldset onChange={handleChange}>
+    <fieldset >
       {variables.map((row) => (
         <div key={row.variable} className="item">
-          <input
-            type="radio"
-            id={row.variable}
-            name="variable"
-            value={row.variable}
-          />
-          <label htmlFor={row.variable}>{row.variable}</label>
+          <label htmlFor={row.variable}>
+            <input
+              onChange={handleChange}
+              type="radio"
+              id={row.variable}
+              name="variable"
+              value={row.variable}
+            />
+            &nbsp;
+            {row.variable}
+          </label>
           <div className="variables__description">{row.description}</div>
         </div>
       ))}
+      <div>
+        <input type="radio" id="dewey" name="drone" value="dewey" />
+        <label htmlFor="dewey">Dewey</label>
+      </div>
     </fieldset>
   );
 }

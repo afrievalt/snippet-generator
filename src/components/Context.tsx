@@ -12,16 +12,16 @@ export interface MyContext {
   tabTrigger: string;
   snippet: string;
   mode: Mode;
-  insertVarValue: string;
-  replaceVarValue: Placeholder;
   variable: string;
   modalIndex: number;
+  currentPlaceholder: string;
   setModalIndex: React.Dispatch<React.SetStateAction<number>>;
   setVariable: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   setTabTrigger: React.Dispatch<React.SetStateAction<string>>;
   setSnippet: React.Dispatch<React.SetStateAction<string>>;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  setCurrentPlaceholder: React.Dispatch<React.SetStateAction<string>>;
   placeholder$: Placeholder[];
 }
 
@@ -34,13 +34,13 @@ const Context = createContext<MyContext>({
   setSnippet: () => {},
   mode: "vscode",
   setMode: () => {},
-  insertVarValue: "",
-  replaceVarValue: {value:"",description:""},
   variable: "",
   setVariable: () => {},
   modalIndex: 1,
   setModalIndex: () => {},
   placeholder$: [],
+  currentPlaceholder: "",
+  setCurrentPlaceholder: ()=>{}
 });
 
 const url = new URL(window.location.href);
@@ -58,15 +58,16 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [tabTrigger, setTabTrigger] = useState(urlTabtrigger);
   const [snippet, setSnippet] = useState(urlSnippet);
   const [mode, setMode] = useState<Mode>(urlMode as Mode);
-  const [replaceVarIndex, setReplaceVarIndex] = useState(1);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState("");
+
   const [variable, setVariable] = useState("");
   const [modalIndex, setModalIndex] = useState(0);
 
   const [placeholder$, setPlaceholder$] = useState([
-    {value: "${1:example}", description: ""},
-    {value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}", description: ""},
+    { value: "${1:example}", description: "" },
+    { value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}", description: "" },
   ]);
-  console.log(setPlaceholder$, setReplaceVarIndex)
+  console.log(setPlaceholder$);
 
   useEffect(() => {
     const shareUrl = new URL(window.location.href);
@@ -86,8 +87,6 @@ const ContextProvider = ({ children }: ProviderProps) => {
       `${location.pathname}?${shareUrl.searchParams}`
     );
   }, [description, tabTrigger, snippet, mode]);
-  const insertVarValue = `$${variable}`; // var$[insertVarIndex]
-  const replaceVarValue = placeholder$[replaceVarIndex];
   return (
     <Context.Provider
       value={{
@@ -99,13 +98,13 @@ const ContextProvider = ({ children }: ProviderProps) => {
         setSnippet,
         mode,
         setMode,
-        insertVarValue,
-        replaceVarValue,
         variable,
         setVariable,
         modalIndex,
         setModalIndex,
         placeholder$,
+        currentPlaceholder,
+        setCurrentPlaceholder,
       }}
     >
       {children}

@@ -1,7 +1,9 @@
-import { useContext, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Context } from "../../Context";
 import { Div } from "../../Div";
-import VariableForm, { VARIABLE_FORM_ID } from "../../Placeholders/VariableForm";
+import VariableForm, {
+  VARIABLE_FORM_ID,
+} from "../../Placeholders/VariableForm";
 import { descriptionLookup } from "../../Placeholders/variables";
 
 type Props = {
@@ -35,10 +37,17 @@ function EditPlaceholder(props: Props) {
     setShowNewPlaceholder(true);
   };
   const handleSelect = (variable: string) => {
-    const value = `$${variable}`
+    const value = `$${variable}`;
     const description = descriptionLookup[variable];
-    setForm({value, description})
-  }
+    setForm({ value, description });
+  };
+  const handleRadio = (e: ChangeEvent<HTMLInputElement>) => {
+    const {target} = e;
+    const {checked, value} = target
+    if(checked) {
+        context.setCurrentPlaceholder(value)
+    }
+    console.log(e.target.value)};
   return (
     <div className="app_placeholder">
       <div className="app__halftop">
@@ -65,7 +74,18 @@ function EditPlaceholder(props: Props) {
       </div>
       <div>
         {context.placeholder$.map((row, i) => {
-          return <div key={i}>{row.value}</div>;
+          return (
+            <div key={i}>
+              <input
+                type="radio"
+                id={row.value}
+                name="insert"
+                value={row.value}
+                onChange={handleRadio}
+              />
+              <label htmlFor={row.value}>{row.value}</label>
+            </div>
+          );
         })}
         <Div show={!showNewPlaceholder} className="inline">
           <button onClick={handleClickNew}>New</button>
@@ -76,10 +96,7 @@ function EditPlaceholder(props: Props) {
           <div>
             <label>
               <span>Placeholder</span>
-              <input
-                value={form?.value}
-                onChange={acquireOnChange("value")}
-              />
+              <input value={form?.value} onChange={acquireOnChange("value")} />
             </label>
             <label>
               <span>Description</span>

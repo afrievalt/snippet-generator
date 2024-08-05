@@ -30,7 +30,7 @@ const handleInsert = (e: Event, context: MyContext) => {
   console.log(
     "%c >>>",
     "background: #222; color: #bada55",
-    context.insertVarValue
+    //context.insertVarValue
   );
 
   const initialSelectionStart = e.currentTarget.selectionStart;
@@ -44,7 +44,7 @@ const handleInsert = (e: Event, context: MyContext) => {
     initialSelectionEnd + e.currentTarget.textLength
   );
 
-  const newValue = `${stringBeforeCaret}${context.insertVarValue}${stringAfterCaret}`;
+  const newValue = `${stringBeforeCaret}${context.currentPlaceholder}${stringAfterCaret}`;
 
   e.currentTarget.value = newValue;  
 //  e.currentTarget.selectionStart = initialSelectionStart + 4;
