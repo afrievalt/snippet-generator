@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export type Mode = "vscode" | "sublimetext" | "atom" | "edit" | "placeholder";
 
@@ -65,7 +66,7 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [variable, setVariable] = useState("");
   const [modalIndex, setModalIndex] = useState(0);
 
-  const [placeholder$, setPlaceholder$] = useState([
+  const [placeholder$, setPlaceholder$] = useLocalStorage("placeholders", [
     { value: "${1:example}", description: "" },
     { value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}", description: "" },
   ]);

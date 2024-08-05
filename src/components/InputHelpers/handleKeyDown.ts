@@ -79,6 +79,7 @@ const acquireOnKeyDown = (context: MyContext) => (e: Event) => {
   ) {
     handleReplace(e, context);
   }
+  context.setMode("vscode")
 };
 
 export { acquireOnKeyDown };

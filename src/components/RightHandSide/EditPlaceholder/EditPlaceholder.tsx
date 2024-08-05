@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Context } from "../../Context";
 import { Div } from "../../Div";
 import VariableForm, {

@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { writeToClipboard } from "../../util/writeToClipboard";
-
+import {useClipboard} from "../../hooks/useClipboard";
 type Props = {
   copyValue: string;
   originalLabel: string; 
@@ -8,13 +6,11 @@ type Props = {
 
 function CopyToClipboard(props: Props) {
   const { copyValue, originalLabel } = props;
-  const [savedToClipboard, setSavedToClipboard] = useState("");
-
+  const [clipboard, setClipboard] = useClipboard("")
   const handleClickCopy = async () => {
-    await writeToClipboard(copyValue);
-    setSavedToClipboard(copyValue);
+    setClipboard(copyValue)
   };
-  const isCopied = copyValue === savedToClipboard
+  const isCopied = copyValue === clipboard
   return (
     <button className="app__btn app__btncopy" onClick={handleClickCopy}>
       {isCopied ? "Copied" : `Copy ${originalLabel}`}
