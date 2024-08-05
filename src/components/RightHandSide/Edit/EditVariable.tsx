@@ -20,8 +20,7 @@ type Event = React.ChangeEvent<HTMLInputElement>;
 
 function EditVariable(props: Props) {
   const { show } = props;
-  const context = useContext(Context);
-  const [savedToClipboard, setSavedToClipboard] = useState(false);
+  const context = useContext(Context);  
   const [form, setForm] = useState(initForm);
   if (!show) {
     return null;
@@ -37,11 +36,16 @@ function EditVariable(props: Props) {
   const acquireOnChange = (key: string) => (e: Event) => {
     setForm({ ...form, [key]: e.target.value });
   };
+
   const newValue =
     "$" +
     `{${[form.variable, form.regex, form.format, form.regexOptions].join(
       "/"
     )}}`;
+  const handleAdd = () => {
+    context.addPlaceholder({value: newValue, description: ""})
+    context.setMode("placeholder")
+  }
   return (
     <div>
       <div>
@@ -83,6 +87,7 @@ function EditVariable(props: Props) {
       </div>
       <div>{newValue}</div>
       <div className="app__buttons">
+        <button onClick={handleAdd} className="app__btn app__btncopy">Add</button>
         <CopyToClipboard copyValue={newValue} originalLabel="variable" />
       </div>
       <VariableForm onSelect={handleSelect} />
@@ -91,3 +96,4 @@ function EditVariable(props: Props) {
 }
 
 export default EditVariable;
+

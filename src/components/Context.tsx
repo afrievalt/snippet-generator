@@ -23,6 +23,7 @@ export interface MyContext {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
   setCurrentPlaceholder: React.Dispatch<React.SetStateAction<string>>;
   placeholder$: Placeholder[];
+  addPlaceholder: (p: Placeholder) => void
 }
 
 const Context = createContext<MyContext>({
@@ -40,7 +41,8 @@ const Context = createContext<MyContext>({
   setModalIndex: () => {},
   placeholder$: [],
   currentPlaceholder: "",
-  setCurrentPlaceholder: ()=>{}
+  setCurrentPlaceholder: ()=>{},
+  addPlaceholder: () => {}
 });
 
 const url = new URL(window.location.href);
@@ -68,7 +70,9 @@ const ContextProvider = ({ children }: ProviderProps) => {
     { value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}", description: "" },
   ]);
   console.log(setPlaceholder$);
-
+  const addPlaceholder = (placeholder: Placeholder) => {
+    setPlaceholder$([...placeholder$, placeholder])
+  }
   useEffect(() => {
     const shareUrl = new URL(window.location.href);
     shareUrl.searchParams.set("description", description);
@@ -105,6 +109,7 @@ const ContextProvider = ({ children }: ProviderProps) => {
         placeholder$,
         currentPlaceholder,
         setCurrentPlaceholder,
+        addPlaceholder
       }}
     >
       {children}

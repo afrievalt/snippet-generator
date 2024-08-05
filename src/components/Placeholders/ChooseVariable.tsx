@@ -14,6 +14,7 @@ function ChooseVariable() {
         <div key={row.variable} className="item">
           <label htmlFor={row.variable}>
             <input
+              checked={context.variable === row.variable}
               onChange={handleChange}
               type="radio"
               id={row.variable}
@@ -31,3 +32,5 @@ function ChooseVariable() {
 }
 
 export default ChooseVariable;
+
+
