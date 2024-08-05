@@ -25,11 +25,7 @@ function ChooseVariable() {
           </label>
           <div className="variables__description">{row.description}</div>
         </div>
-      ))}
-      <div>
-        <input type="radio" id="dewey" name="drone" value="dewey" />
-        <label htmlFor="dewey">Dewey</label>
-      </div>
+      ))}      
     </fieldset>
   );
 }

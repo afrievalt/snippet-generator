@@ -1,13 +1,12 @@
-import { Context  } from "../Context";
-import { useContext  } from "react";
-import Edit from "./Edit/Edit";
+import { Context } from "../Context";
+import { useContext } from "react";
+import EditVariable from "./Edit/EditVariable";
 import Output from "./Output";
 import EditPlaceholder from "./EditPlaceholder/EditPlaceholder";
 
-
 const RightHandSide = () => {
   const context = useContext(Context);
-  
+
   return (
     <div className="app__half">
       <div className="app__halftop">
@@ -54,12 +53,12 @@ const RightHandSide = () => {
       </div>
 
       <div className="app__halfbottom">
-        <Output show={context.mode === "vscode"}/>       
-        <Edit show={context.mode === "edit"} /> 
-        <EditPlaceholder show={context.mode === "placeholder"}/>
+        <Output show={context.mode === "vscode"} />
+        <EditVariable show={context.mode === "edit"} />
+        <EditPlaceholder show={context.mode === "placeholder"} />
       </div>
     </div>
   );
 };
 
-export {RightHandSide};
+export { RightHandSide };

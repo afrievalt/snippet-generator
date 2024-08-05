@@ -3,6 +3,7 @@ import { Context } from "../../Context";
 import VariableForm, {
   VARIABLE_FORM_ID,
 } from "../../Placeholders/VariableForm";
+import { CopyToClipboard } from "../../_shared/CopyToClipboard";
 
 type Props = {
   show: boolean;
@@ -17,9 +18,10 @@ const initForm = {
 
 type Event = React.ChangeEvent<HTMLInputElement>;
 
-function Edit(props: Props) {
+function EditVariable(props: Props) {
   const { show } = props;
   const context = useContext(Context);
+  const [savedToClipboard, setSavedToClipboard] = useState(false);
   const [form, setForm] = useState(initForm);
   if (!show) {
     return null;
@@ -80,9 +82,12 @@ function Edit(props: Props) {
         </label>
       </div>
       <div>{newValue}</div>
+      <div className="app__buttons">
+        <CopyToClipboard copyValue={newValue} originalLabel="variable" />
+      </div>
       <VariableForm onSelect={handleSelect} />
     </div>
   );
 }
 
-export default Edit;
+export default EditVariable;

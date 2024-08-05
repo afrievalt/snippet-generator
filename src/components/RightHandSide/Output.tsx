@@ -1,6 +1,8 @@
 import { Context, Mode } from "../Context";
 import { useContext, useEffect, useState } from "react";
 import parseVSCode from "../../parseVSCode";
+import { writeToClipboard } from "../../util/writeToClipboard";
+import { CopyToClipboard } from "../_shared/CopyToClipboard";
 
 const parseSnippet = (
   mode: Mode,
@@ -21,13 +23,8 @@ type Props = {
 
 const Output = (props: Props) => {
   const { show } = props;
-  const context = useContext(Context);
-  const [savedToClipboard, setSavedToClipboard] = useState(false);
-
-  useEffect(() => {
-    setSavedToClipboard(false);
-  }, [context]);
-
+  const context = useContext(Context);  
+  
   const result = parseSnippet(
     context.mode,
     context.snippet,
@@ -35,13 +32,7 @@ const Output = (props: Props) => {
     context.description
   );
 
-  const writeToClipboard = async () => {
-    const type = "text/plain";
-    const blob = new Blob([result], { type });
-    const data = [new ClipboardItem({ [type]: blob })];
-    await navigator.clipboard.write(data);
-    setSavedToClipboard(true);
-  };
+  
   if (!show) {
     return null;
   }
@@ -51,9 +42,7 @@ const Output = (props: Props) => {
       <pre className="app__pre">{result}</pre>
 
       <div className="app__buttons">
-        <button className="app__btn app__btncopy" onClick={writeToClipboard}>
-          {savedToClipboard ? "Copied" : "Copy snippet"}
-        </button>
+        <CopyToClipboard copyValue={result} originalLabel="snippet"/>
       </div>
     </>
   );

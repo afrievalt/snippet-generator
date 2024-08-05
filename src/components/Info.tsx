@@ -11,7 +11,7 @@ const Info = () => {
   return (
     <p className="app__info">
       ({platformKey} + i):{" "}
-      <span className="app__infoselect">{context.insertVarValue}</span> |{" "}
+      <span className="app__infoselect">{context.currentPlaceholder}</span> |{" "}
       <a
         className="app__infolink"
         href="https://code.visualstudio.com/docs/editor/userdefinedsnippets"
