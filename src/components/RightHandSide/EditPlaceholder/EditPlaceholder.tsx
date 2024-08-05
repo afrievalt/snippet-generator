@@ -5,6 +5,7 @@ import VariableForm, {
   VARIABLE_FORM_ID,
 } from "../../Placeholders/VariableForm";
 import { descriptionLookup } from "../../Placeholders/variables";
+import { PlaceholderList } from "./PlaceholderList";
 
 type Props = {
   show: boolean;
@@ -19,7 +20,6 @@ type Event = React.ChangeEvent<HTMLInputElement>;
 
 function EditPlaceholder(props: Props) {
   const context = useContext(Context);
-  const [isInsert, setIsInsert] = useState(true);
   const [showNewPlaceholder, setShowNewPlaceholder] = useState(false);
   const [form, setForm] = useState(initForm);
   const { show } = props;
@@ -41,52 +41,10 @@ function EditPlaceholder(props: Props) {
     const description = descriptionLookup[variable];
     setForm({ value, description });
   };
-  const handleRadio = (e: ChangeEvent<HTMLInputElement>) => {
-    const {target} = e;
-    const {checked, value} = target
-    if(checked) {
-        context.setCurrentPlaceholder(value)
-    }
-    console.log(e.target.value)};
   return (
     <div className="app_placeholder">
-      <div className="app__halftop">
-        <button
-          className={
-            isInsert
-              ? "app__button app__button--vscode app__button--active"
-              : "app__button app__button--vscode"
-          }
-          onClick={() => setIsInsert(true)}
-        >
-          Insert
-        </button>
-        <button
-          className={
-            isInsert
-              ? "app__button app__button--sublimetext"
-              : "app__button app__button--vscode app__button--active"
-          }
-          onClick={() => setIsInsert(false)}
-        >
-          Replace
-        </button>
-      </div>
-      <div>
-        {context.placeholder$.map((row, i) => {
-          return (
-            <div key={i}>
-              <input
-                type="radio"
-                id={row.value}
-                name="insert"
-                value={row.value}
-                onChange={handleRadio}
-              />
-              <label htmlFor={row.value}>{row.value}</label>
-            </div>
-          );
-        })}
+      <PlaceholderList />
+      <div>      
         <Div show={!showNewPlaceholder} className="inline">
           <button onClick={handleClickNew}>New</button>
           <button onClick={handleClickVariable}>Add Variable</button>
