@@ -27,8 +27,8 @@ function EditPlaceholder(props: Props) {
     return null;
   }
 
-  const handleCancel = (showNew: boolean) => {
-    !showNew && setForm(undefined);
+  const handleCancel = () => {
+    setForm(undefined);
   };
   const handleClickNew = () => {
     setForm({...initForm, id: getUUID()});

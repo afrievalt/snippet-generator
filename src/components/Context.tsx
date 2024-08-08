@@ -29,8 +29,8 @@ export interface MyContext {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
   setCurrentPlaceholder: React.Dispatch<React.SetStateAction<Placeholder>>;
   placeholder$: Placeholder[];
-  addPlaceholder: (p: Placeholder) => void;
-  updatePlaceholder: (p: Placeholder) => void;
+  upsertPlaceholder: (p: Placeholder) => void;
+  removePlaceholder: (p: Placeholder) => void;
 }
 
 const Context = createContext<MyContext>({
@@ -49,8 +49,8 @@ const Context = createContext<MyContext>({
   placeholder$: [],
   currentPlaceholder: { value: "", id: "", description: "" },
   setCurrentPlaceholder: () => {},
-  addPlaceholder: () => {},
-  updatePlaceholder: () => {},
+  upsertPlaceholder: () => {},
+  removePlaceholder: () => {},
 });
 
 const url = new URL(window.location.href);
@@ -84,16 +84,14 @@ const ContextProvider = ({ children }: ProviderProps) => {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(
     defaultPlaceholder$[0]
   );
-
   const [variable, setVariable] = useState("");
   const [modalIndex, setModalIndex] = useState(0);
-
   const [placeholder$, setPlaceholder$] = useLocalStorage(
     "placeholders",
     defaultPlaceholder$
   );
   // todo: rename to upsertPlaceholder
-  const addPlaceholder = (placeholder: Placeholder) => {
+  const upsertPlaceholder = (placeholder: Placeholder) => {
     const i = placeholder$.findIndex((v) => v.id === placeholder.id);
     if(i=== -1) {
       setPlaceholder$([...placeholder$, placeholder]);
@@ -103,19 +101,10 @@ const ContextProvider = ({ children }: ProviderProps) => {
       setPlaceholder$(copy)
       setCurrentPlaceholder(copy[i])
     }
-
-
-    console.log(
-      "%c placeholder>>>",
-      "background: #222; color: #bada55",
-      placeholder
-    );
-
-    
-  };
-  const updatePlaceholder = (placeholder: Placeholder) => {
-    //const
-    setPlaceholder$([...placeholder$, placeholder]);
+  };  
+  const removePlaceholder = (placeholder: Placeholder) => {
+    const filtered = placeholder$.filter(v => v.id !== placeholder.id )
+    setPlaceholder$(filtered);
   };
   useEffect(() => {
     const shareUrl = new URL(window.location.href);
@@ -153,8 +142,8 @@ const ContextProvider = ({ children }: ProviderProps) => {
         placeholder$,
         currentPlaceholder,
         setCurrentPlaceholder,
-        addPlaceholder,
-        updatePlaceholder,
+        upsertPlaceholder,        
+        removePlaceholder
       }}
     >
       {children}

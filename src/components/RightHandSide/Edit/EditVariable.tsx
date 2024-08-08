@@ -44,7 +44,7 @@ function EditVariable(props: Props) {
       "/"
     )}}`;
   const handleAdd = () => {
-    context.addPlaceholder({value: newValue, description: "", id: getUUID()})
+    context.upsertPlaceholder({value: newValue, description: "", id: getUUID()})
     context.setMode("placeholder")
   }
   return (

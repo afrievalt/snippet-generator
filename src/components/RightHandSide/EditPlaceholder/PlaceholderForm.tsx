@@ -1,53 +1,38 @@
 import { useContext, useState } from "react";
 import { Context, Placeholder } from "../../Context";
-import VariableForm, {
-  VARIABLE_FORM_ID,
-} from "../../Placeholders/VariableForm";
-import { descriptionLookup } from "../../Placeholders/variables";
-import { getUUID } from "../../../util/getUUID";
+import { Div } from "../../Div";
 
 type Props = {
   show: boolean;
-  onCancel: (show: boolean) => void;
+  onCancel: () => void;
   initForm: undefined | Placeholder;
-};
-
-const initForm = {
-  value: "never",
-  description: "",
-  id: ""
 };
 
 type Event = React.ChangeEvent<HTMLInputElement>;
 
 function PlaceholderForm(props: Props) {
-  const context = useContext(Context);  
-  const [form, setForm] = useState(props.initForm!);
+  const { show, initForm, onCancel } = props;
+  const context = useContext(Context);
+  const [form, setForm] = useState(initForm!);
+  const isEdit =
+    !!context.placeholder$.find((v) => v.id === initForm?.id) &&
+    initForm?.value === form.value;
 
-  const { show } = props;
   if (!show) {
     return null;
   }
   const acquireOnChange = (key: string) => (e: Event) => {
     setForm({ ...form, [key]: e.target.value });
   };
-  const handleClickVariable = () => {
-    context.setModalIndex(VARIABLE_FORM_ID);
-  };
   const handleSave = () => {
-      context.addPlaceholder(form);    
-    
-    props.onCancel(false);
-    setForm(initForm);
+    context.upsertPlaceholder(form);
+    onCancel();
+    //setForm(initForm);
   };
-  const handleCancel = () => {
-    props.onCancel(false);
-    setForm(initForm);  //todo: is this needed, remove?
-  };
-  const handleSelect = (variable: string) => {
-    const value = `$${variable}`;
-    const description = descriptionLookup[variable];
-    setForm({ value, description, id: getUUID() });
+  
+  const handleDelete = () => {
+    context.removePlaceholder(form);
+    onCancel();
   };
   return (
     <div>
@@ -64,11 +49,11 @@ function PlaceholderForm(props: Props) {
           />
         </label>
       </div>
-      <button onClick={handleClickVariable}>Add Variable</button>
-      <button>Add Transform</button>
-      <button onClick={handleCancel}>Cancel</button>
+      <Div show={isEdit} fragment>
+        <button onClick={handleDelete}>Delete</button>
+      </Div>
+      <button onClick={onCancel}>Cancel</button>
       <button onClick={handleSave}>Save</button>
-      <VariableForm onSelect={handleSelect} />
     </div>
   );
 }
