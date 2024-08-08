@@ -7,22 +7,25 @@ function PlaceholderList() {
     const { target } = e;
     const { checked, value } = target;
     if (checked) {
-      context.setCurrentPlaceholder(value);
+      const ph = context.placeholder$.find(v=>v.id === value)
+      ph && context.setCurrentPlaceholder(ph);
     }
   };
+  const { placeholder$ = [], currentPlaceholder } = context;
   return (
     <div>
-      {context.placeholder$.map((row, i) => {
+      {placeholder$.map((row) => {
         return (
-          <div key={i}>
+          <div key={row.id}>
             <input
               type="radio"
-              id={row.value}
+              checked={row.id === currentPlaceholder.id}
+              id={row.id}
               name="insert"
-              value={row.value}
+              value={row.id}
               onChange={handleRadio}
             />
-            <label htmlFor={row.value}>{row.value}</label>
+            <label htmlFor={row.id}>{row.value}</label>
           </div>
         );
       })}

@@ -1,11 +1,13 @@
 import { useContext, useState } from "react";
-import { Context } from "../../Context";
+import { Context, Placeholder } from "../../Context";
 import { Div } from "../../Div";
 import VariableForm, {
   VARIABLE_FORM_ID,
 } from "../../Placeholders/VariableForm";
 import { descriptionLookup } from "../../Placeholders/variables";
 import { PlaceholderList } from "./PlaceholderList";
+import { PlaceholderForm } from "./PlaceholderForm";
+import { getUUID } from "../../../util/getUUID";
 
 type Props = {
   show: boolean;
@@ -16,59 +18,48 @@ const initForm = {
   description: "",
 };
 
-type Event = React.ChangeEvent<HTMLInputElement>;
-
 function EditPlaceholder(props: Props) {
   const context = useContext(Context);
-  const [showNewPlaceholder, setShowNewPlaceholder] = useState(false);
-  const [form, setForm] = useState(initForm);
+  const [form, setForm] = useState<Placeholder | undefined>();
+  const showNewPlaceholder = !!form;
   const { show } = props;
   if (!show) {
     return null;
   }
-  const acquireOnChange = (key: string) => (e: Event) => {
-    setForm({ ...form, [key]: e.target.value });
+
+  const handleCancel = (showNew: boolean) => {
+    !showNew && setForm(undefined);
   };
   const handleClickNew = () => {
-    setShowNewPlaceholder(true);
+    setForm({...initForm, id: getUUID()});
+  };
+  const handleClickEdit = () => {
+    // todo: current should be a placehoder, not a string 
+    setForm(context.currentPlaceholder);
   };
   const handleClickVariable = () => {
     context.setModalIndex(VARIABLE_FORM_ID);
-    setShowNewPlaceholder(true);
   };
-  const handleSelect = (variable: string) => {
+  const handleSelectVariable = (variable: string) => {
     const value = `$${variable}`;
     const description = descriptionLookup[variable];
-    setForm({ value, description });
+    setForm({ value, description, id: getUUID() });
   };
   return (
     <div className="app_placeholder">
-      <PlaceholderList />
-      <div>      
+      <div>
         <Div show={!showNewPlaceholder} className="inline">
+          <PlaceholderList  />
           <button onClick={handleClickNew}>New</button>
+          <button onClick={handleClickEdit}>Edit</button>
           <button onClick={handleClickVariable}>Add Variable</button>
           <button>Add Transform</button>
         </Div>
-        <Div show={showNewPlaceholder} className="inline">
-          <div>
-            <label>
-              <span>Placeholder</span>
-              <input value={form?.value} onChange={acquireOnChange("value")} />
-            </label>
-            <label>
-              <span>Description</span>
-              <input
-                value={form?.description}
-                onChange={acquireOnChange("description")}
-              />
-            </label>
-          </div>
-          <button onClick={handleClickVariable}>Add Variable</button>
-          <button>Add Transform</button>
+        <Div show={showNewPlaceholder}>
+          <PlaceholderForm show onCancel={handleCancel} initForm={form} />
         </Div>
       </div>
-      <VariableForm onSelect={handleSelect} />
+      <VariableForm onSelect={handleSelectVariable} />
     </div>
   );
 }

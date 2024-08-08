@@ -4,6 +4,7 @@ import VariableForm, {
   VARIABLE_FORM_ID,
 } from "../../Placeholders/VariableForm";
 import { CopyToClipboard } from "../../_shared/CopyToClipboard";
+import { getUUID } from "../../../util/getUUID";
 
 type Props = {
   show: boolean;
@@ -43,7 +44,7 @@ function EditVariable(props: Props) {
       "/"
     )}}`;
   const handleAdd = () => {
-    context.addPlaceholder({value: newValue, description: ""})
+    context.addPlaceholder({value: newValue, description: "", id: getUUID()})
     context.setMode("placeholder")
   }
   return (

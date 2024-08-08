@@ -1,7 +1,6 @@
 import { Context, Mode } from "../Context";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import parseVSCode from "../../parseVSCode";
-import { writeToClipboard } from "../../util/writeToClipboard";
 import { CopyToClipboard } from "../_shared/CopyToClipboard";
 
 const parseSnippet = (

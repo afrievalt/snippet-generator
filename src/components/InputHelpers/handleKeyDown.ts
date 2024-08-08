@@ -44,7 +44,7 @@ const handleInsert = (e: Event, context: MyContext) => {
     initialSelectionEnd + e.currentTarget.textLength
   );
 
-  const newValue = `${stringBeforeCaret}${context.currentPlaceholder}${stringAfterCaret}`;
+  const newValue = `${stringBeforeCaret}${context.currentPlaceholder.value}${stringAfterCaret}`;
 
   e.currentTarget.value = newValue;  
 //  e.currentTarget.selectionStart = initialSelectionStart + 4;

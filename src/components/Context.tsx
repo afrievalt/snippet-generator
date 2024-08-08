@@ -6,6 +6,11 @@ export type Mode = "vscode" | "sublimetext" | "atom" | "edit" | "placeholder";
 export interface Placeholder {
   value: string;
   description: string;
+  id: string;
+  // add id to placeholder
+  // remove PlaceholderType
+  // redo Add / new Placeholder
+  // impliment update placeholder
 }
 
 export interface MyContext {
@@ -15,16 +20,17 @@ export interface MyContext {
   mode: Mode;
   variable: string;
   modalIndex: number;
-  currentPlaceholder: string;
+  currentPlaceholder: Placeholder;
   setModalIndex: React.Dispatch<React.SetStateAction<number>>;
   setVariable: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
   setTabTrigger: React.Dispatch<React.SetStateAction<string>>;
   setSnippet: React.Dispatch<React.SetStateAction<string>>;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
-  setCurrentPlaceholder: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentPlaceholder: React.Dispatch<React.SetStateAction<Placeholder>>;
   placeholder$: Placeholder[];
-  addPlaceholder: (p: Placeholder) => void
+  addPlaceholder: (p: Placeholder) => void;
+  updatePlaceholder: (p: Placeholder) => void;
 }
 
 const Context = createContext<MyContext>({
@@ -41,9 +47,10 @@ const Context = createContext<MyContext>({
   modalIndex: 1,
   setModalIndex: () => {},
   placeholder$: [],
-  currentPlaceholder: "",
-  setCurrentPlaceholder: ()=>{},
-  addPlaceholder: () => {}
+  currentPlaceholder: { value: "", id: "", description: "" },
+  setCurrentPlaceholder: () => {},
+  addPlaceholder: () => {},
+  updatePlaceholder: () => {},
 });
 
 const url = new URL(window.location.href);
@@ -56,24 +63,60 @@ interface ProviderProps {
   children: React.ReactNode;
 }
 
+const defaultPlaceholder$ = [
+  {
+    value: "${1:example}",
+    description: "",
+    id: "b68a66f9-2d36-4e03-9429-fef335e0c525",
+  },
+  {
+    value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}",
+    description: "",
+    id: "76301f30-7c44-4563-ac38-58be668b3acf",
+  },
+];
+
 const ContextProvider = ({ children }: ProviderProps) => {
   const [description, setDescription] = useState(urlDescription);
   const [tabTrigger, setTabTrigger] = useState(urlTabtrigger);
   const [snippet, setSnippet] = useState(urlSnippet);
   const [mode, setMode] = useState<Mode>(urlMode as Mode);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState("");
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(
+    defaultPlaceholder$[0]
+  );
 
   const [variable, setVariable] = useState("");
   const [modalIndex, setModalIndex] = useState(0);
 
-  const [placeholder$, setPlaceholder$] = useLocalStorage("placeholders", [
-    { value: "${1:example}", description: "" },
-    { value: "${TM_FILENAME_BASE/(.*)/${1:/pascalcase}/g}", description: "" },
-  ]);
-  console.log(setPlaceholder$);
+  const [placeholder$, setPlaceholder$] = useLocalStorage(
+    "placeholders",
+    defaultPlaceholder$
+  );
+  // todo: rename to upsertPlaceholder
   const addPlaceholder = (placeholder: Placeholder) => {
-    setPlaceholder$([...placeholder$, placeholder])
-  }
+    const i = placeholder$.findIndex((v) => v.id === placeholder.id);
+    if(i=== -1) {
+      setPlaceholder$([...placeholder$, placeholder]);
+    }else{
+      const copy = [...placeholder$]
+      copy[i] = placeholder
+      setPlaceholder$(copy)
+      setCurrentPlaceholder(copy[i])
+    }
+
+
+    console.log(
+      "%c placeholder>>>",
+      "background: #222; color: #bada55",
+      placeholder
+    );
+
+    
+  };
+  const updatePlaceholder = (placeholder: Placeholder) => {
+    //const
+    setPlaceholder$([...placeholder$, placeholder]);
+  };
   useEffect(() => {
     const shareUrl = new URL(window.location.href);
     shareUrl.searchParams.set("description", description);
@@ -110,7 +153,8 @@ const ContextProvider = ({ children }: ProviderProps) => {
         placeholder$,
         currentPlaceholder,
         setCurrentPlaceholder,
-        addPlaceholder
+        addPlaceholder,
+        updatePlaceholder,
       }}
     >
       {children}
