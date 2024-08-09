@@ -31,14 +31,17 @@ function EditPlaceholder(props: Props) {
     setForm(undefined);
   };
   const handleClickNew = () => {
-    setForm({...initForm, id: getUUID()});
+    setForm({ ...initForm, id: getUUID() });
   };
   const handleClickEdit = () => {
-    // todo: current should be a placehoder, not a string 
+    // todo: current should be a placehoder, not a string
     setForm(context.currentPlaceholder);
   };
   const handleClickVariable = () => {
     context.setModalIndex(VARIABLE_FORM_ID);
+  };
+  const handleClickAddTransform = () => {
+    context.setMode("edit");
   };
   const handleSelectVariable = (variable: string) => {
     const value = `$${variable}`;
@@ -48,12 +51,14 @@ function EditPlaceholder(props: Props) {
   return (
     <div className="app_placeholder">
       <div>
-        <Div show={!showNewPlaceholder} className="inline">
-          <PlaceholderList  />
-          <button onClick={handleClickNew}>New</button>
-          <button onClick={handleClickEdit}>Edit</button>
-          <button onClick={handleClickVariable}>Add Variable</button>
-          <button>Add Transform</button>
+        <Div show={!showNewPlaceholder}>
+          <PlaceholderList />
+          <div className="inline stretch">
+            <button className="app__btn small" onClick={handleClickNew}>New</button>
+            <button className="app__btn small" onClick={handleClickEdit}>Edit</button>
+            <button className="app__btn small" onClick={handleClickVariable}>Add Variable</button>
+            <button className="app__btn small" onClick={handleClickAddTransform}>Add Transform</button>
+          </div>
         </Div>
         <Div show={showNewPlaceholder}>
           <PlaceholderForm show onCancel={handleCancel} initForm={form} />

@@ -29,7 +29,7 @@ function PlaceholderForm(props: Props) {
     onCancel();
     //setForm(initForm);
   };
-  
+
   const handleDelete = () => {
     context.removePlaceholder(form);
     onCancel();
@@ -49,11 +49,19 @@ function PlaceholderForm(props: Props) {
           />
         </label>
       </div>
-      <Div show={isEdit} fragment>
-        <button onClick={handleDelete}>Delete</button>
-      </Div>
-      <button onClick={onCancel}>Cancel</button>
-      <button onClick={handleSave}>Save</button>
+      <div className="inline stretch">
+        <Div show={isEdit} fragment>
+          <button className="app__btn small" onClick={handleDelete}>
+            Delete
+          </button>
+        </Div>
+        <button className="app__btn small" onClick={onCancel}>
+          Cancel
+        </button>
+        <button className="app__btn small" onClick={handleSave}>
+          Save
+        </button>
+      </div>
     </div>
   );
 }

@@ -21,7 +21,7 @@ type Event = React.ChangeEvent<HTMLInputElement>;
 
 function EditVariable(props: Props) {
   const { show } = props;
-  const context = useContext(Context);  
+  const context = useContext(Context);
   const [form, setForm] = useState(initForm);
   if (!show) {
     return null;
@@ -31,8 +31,8 @@ function EditVariable(props: Props) {
     setForm({ ...form, variable });
   };
   const acquireHandleFormat = (newFormat: string) => () => {
-    const format = `${form.format}\${1:\\${newFormat}}` 
-    setForm({ ...form, format});
+    const format = `${form.format}\${1:\\${newFormat}}`;
+    setForm({ ...form, format });
   };
   const acquireOnChange = (key: string) => (e: Event) => {
     setForm({ ...form, [key]: e.target.value });
@@ -44,9 +44,13 @@ function EditVariable(props: Props) {
       "/"
     )}}`;
   const handleAdd = () => {
-    context.upsertPlaceholder({value: newValue, description: "", id: getUUID()})
-    context.setMode("placeholder")
-  }
+    context.upsertPlaceholder({
+      value: newValue,
+      description: "",
+      id: getUUID(),
+    });
+    context.setMode("placeholder");
+  };
   return (
     <div>
       <div>
@@ -78,17 +82,27 @@ function EditVariable(props: Props) {
       <div>
         <label>
           <span>Format</span>
-          <input value={form?.format} onChange={acquireOnChange("format")} />
-          <button onClick={acquireHandleFormat("upcase")}>UPCASE</button>
-          <button onClick={acquireHandleFormat("downcase")}>downcase</button>
-          <button onClick={acquireHandleFormat("capitalize")}>Capitalize</button>
-          <button onClick={acquireHandleFormat("camelcase")}>camelCase</button>
-          <button onClick={acquireHandleFormat("pascalcase")}>PascalCase</button>
+          <div className="inline">
+            <input value={form?.format} onChange={acquireOnChange("format")} />
+            <button onClick={acquireHandleFormat("upcase")}>UPCASE</button>
+            <button onClick={acquireHandleFormat("downcase")}>downcase</button>
+            <button onClick={acquireHandleFormat("capitalize")}>
+              Capitalize
+            </button>
+            <button onClick={acquireHandleFormat("camelcase")}>
+              camelCase
+            </button>
+            <button onClick={acquireHandleFormat("pascalcase")}>
+              PascalCase
+            </button>
+          </div>
         </label>
       </div>
       <div>{newValue}</div>
       <div className="app__buttons">
-        <button onClick={handleAdd} className="app__btn app__btncopy">Add</button>
+        <button onClick={handleAdd} className="app__btn app__btncopy">
+          Add
+        </button>
         <CopyToClipboard copyValue={newValue} originalLabel="variable" />
       </div>
       <VariableForm onSelect={handleSelect} />
@@ -97,4 +111,3 @@ function EditVariable(props: Props) {
 }
 
 export default EditVariable;
-

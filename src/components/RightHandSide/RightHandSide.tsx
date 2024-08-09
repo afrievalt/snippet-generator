@@ -28,7 +28,7 @@ const RightHandSide = () => {
           }
           onClick={() => context.setMode("placeholder")}
         >
-          Edit Placeholder
+          Placeholder
         </button>
         <button
           className={
@@ -38,7 +38,7 @@ const RightHandSide = () => {
           }
           onClick={() => context.setMode("edit")}
         >
-          Edit Variable
+          Transform
         </button>
         <button
           className={

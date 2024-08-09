@@ -16,7 +16,8 @@ function PlaceholderList() {
     <div>
       {placeholder$.map((row) => {
         return (
-          <div key={row.id}>
+          <div key={row.id} className="row">
+            <label className="form-control">
             <input
               type="radio"
               checked={row.id === currentPlaceholder.id}
@@ -25,7 +26,9 @@ function PlaceholderList() {
               value={row.id}
               onChange={handleRadio}
             />
-            <label htmlFor={row.id}>{row.value}</label>
+              {row.value}
+            </label>            
+            <div className="subtext">{row.description}</div>
           </div>
         );
       })}
