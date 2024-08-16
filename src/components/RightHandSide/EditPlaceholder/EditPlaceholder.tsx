@@ -49,21 +49,28 @@ function EditPlaceholder(props: Props) {
     setForm({ value, description, id: getUUID() });
   };
   return (
-    <div className="app_placeholder">
-      <div>
-        <Div show={!showNewPlaceholder}>
-          <PlaceholderList />
-          <div className="inline stretch">
-            <button className="app__btn small" onClick={handleClickNew}>New</button>
-            <button className="app__btn small" onClick={handleClickEdit}>Edit</button>
-            <button className="app__btn small" onClick={handleClickVariable}>Add Variable</button>
-            <button className="app__btn small" onClick={handleClickAddTransform}>Add Transform</button>
-          </div>
-        </Div>
-        <Div show={showNewPlaceholder}>
-          <PlaceholderForm show onCancel={handleCancel} initForm={form} />
-        </Div>
-      </div>
+    <div className="app_placeholder w-full">
+      <Div show={!showNewPlaceholder}>
+        <PlaceholderList />
+        <div className="inline stretch">
+          <button className="app__btn small" onClick={handleClickNew}>
+            New
+          </button>
+          <button className="app__btn small" onClick={handleClickEdit}>
+            Edit
+          </button>
+          <button className="app__btn small" onClick={handleClickVariable}>
+            Add Variable
+          </button>
+          <button className="app__btn small" onClick={handleClickAddTransform}>
+            Add Transform
+          </button>
+        </div>
+      </Div>
+      <Div show={showNewPlaceholder}>
+        <PlaceholderForm show onCancel={handleCancel} initForm={form} />
+      </Div>
+
       <VariableForm onSelect={handleSelectVariable} />
     </div>
   );

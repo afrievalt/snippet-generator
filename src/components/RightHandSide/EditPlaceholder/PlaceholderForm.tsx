@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Context, Placeholder } from "../../Context";
 import { Div } from "../../Div";
+import TextInput from "../../_shared/TextInput";
 
 type Props = {
   show: boolean;
@@ -37,17 +38,18 @@ function PlaceholderForm(props: Props) {
   return (
     <div>
       <div>
-        <label>
-          <span>Placeholder</span>
-          <input value={form?.value} onChange={acquireOnChange("value")} />
-        </label>
-        <label>
-          <span>Description</span>
-          <input
-            value={form?.description}
-            onChange={acquireOnChange("description")}
-          />
-        </label>
+        <TextInput
+          id="placeholder_input"
+          label="Placeholder"
+          value={form?.value}
+          onChange={acquireOnChange("value")}
+        />
+        <TextInput
+          id="placeholder_input"
+          label="Description"
+          value={form?.description}
+          onChange={acquireOnChange("description")}
+        />        
       </div>
       <div className="inline stretch">
         <Div show={isEdit} fragment>

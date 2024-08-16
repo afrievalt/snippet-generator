@@ -5,6 +5,7 @@ import VariableForm, {
 } from "../../Placeholders/VariableForm";
 import { CopyToClipboard } from "../../_shared/CopyToClipboard";
 import { getUUID } from "../../../util/getUUID";
+import TextInput from "../../_shared/TextInput";
 
 type Props = {
   show: boolean;
@@ -15,6 +16,7 @@ const initForm = {
   regex: "",
   regexOptions: "",
   format: "",
+  description: "",
 };
 
 type Event = React.ChangeEvent<HTMLInputElement>;
@@ -52,7 +54,7 @@ function EditVariable(props: Props) {
     context.setMode("placeholder");
   };
   return (
-    <div>
+    <div className="app_placeholder">
       <div>
         <label>
           <span>Variable</span>
@@ -64,40 +66,51 @@ function EditVariable(props: Props) {
         </label>
         <VariableForm onSelect={handleSelect} />
       </div>
-      <div>
-        <label>
-          <span>Regex</span>
-          <input value={form?.regex} onChange={acquireOnChange("regex")} />
-        </label>
-      </div>
-      <div>
-        <label>
-          <span>Regex Options</span>
-          <input
-            value={form?.regexOptions}
-            onChange={acquireOnChange("regexOptions")}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          <span>Format</span>
-          <div className="inline">
-            <input value={form?.format} onChange={acquireOnChange("format")} />
-            <button onClick={acquireHandleFormat("upcase")}>UPCASE</button>
-            <button onClick={acquireHandleFormat("downcase")}>downcase</button>
-            <button onClick={acquireHandleFormat("capitalize")}>
-              Capitalize
-            </button>
-            <button onClick={acquireHandleFormat("camelcase")}>
-              camelCase
-            </button>
-            <button onClick={acquireHandleFormat("pascalcase")}>
-              PascalCase
-            </button>
-          </div>
-        </label>
-      </div>
+      <TextInput
+        id="variable"
+        label="Variable"
+        value={form?.variable}
+        onChange={acquireOnChange("variable")}
+      >
+        <button onClick={handleInsertVariable}>Insert</button>
+      </TextInput>
+      <TextInput
+        id="regex"
+        label="Regex"
+        value={form?.regex}
+        onChange={acquireOnChange("regex")}
+      ></TextInput>
+      <TextInput
+        id="regexOptions"
+        label="Regex Options"
+        value={form?.regexOptions}
+        onChange={acquireOnChange("regexOptions")}
+      ></TextInput>
+      <TextInput
+        id="format"
+        label="Format"
+        value={form?.format}
+        onChange={acquireOnChange("format")}
+      >
+        <div className="inline-wrap">
+          <button onClick={acquireHandleFormat("upcase")}>UPCASE</button>
+          <button onClick={acquireHandleFormat("downcase")}>downcase</button>
+          <button onClick={acquireHandleFormat("capitalize")}>
+            Capitalize
+          </button>
+          <button onClick={acquireHandleFormat("camelcase")}>camelCase</button>
+          <button onClick={acquireHandleFormat("pascalcase")}>
+            PascalCase
+          </button>
+        </div>
+      </TextInput>
+      <TextInput
+        id="description"
+        label="Description"
+        value={form?.description}
+        onChange={acquireOnChange("description")}
+      ></TextInput>
+
       <div>{newValue}</div>
       <div className="app__buttons">
         <button onClick={handleAdd} className="app__btn app__btncopy">
