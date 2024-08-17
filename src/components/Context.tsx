@@ -7,10 +7,6 @@ export interface Placeholder {
   value: string;
   description: string;
   id: string;
-  // add id to placeholder
-  // remove PlaceholderType
-  // redo Add / new Placeholder
-  // impliment update placeholder
 }
 
 export interface MyContext {
@@ -21,6 +17,7 @@ export interface MyContext {
   variable: string;
   modalIndex: number;
   currentPlaceholder: Placeholder;
+  placeholderIndex: number;
   setModalIndex: React.Dispatch<React.SetStateAction<number>>;
   setVariable: React.Dispatch<React.SetStateAction<string>>;
   setDescription: React.Dispatch<React.SetStateAction<string>>;
@@ -28,12 +25,14 @@ export interface MyContext {
   setSnippet: React.Dispatch<React.SetStateAction<string>>;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
   setCurrentPlaceholder: React.Dispatch<React.SetStateAction<Placeholder>>;
+  setPlaceholderIndex: React.Dispatch<React.SetStateAction<number>>;
   placeholder$: Placeholder[];
   upsertPlaceholder: (p: Placeholder) => void;
   removePlaceholder: (p: Placeholder) => void;
 }
 
 const Context = createContext<MyContext>({
+  placeholderIndex: 0,
   description: "",
   setDescription: () => {},
   tabTrigger: "",
@@ -51,6 +50,7 @@ const Context = createContext<MyContext>({
   setCurrentPlaceholder: () => {},
   upsertPlaceholder: () => {},
   removePlaceholder: () => {},
+  setPlaceholderIndex: () => {},
 });
 
 const url = new URL(window.location.href);
@@ -77,6 +77,7 @@ const defaultPlaceholder$ = [
 ];
 
 const ContextProvider = ({ children }: ProviderProps) => {
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [description, setDescription] = useState(urlDescription);
   const [tabTrigger, setTabTrigger] = useState(urlTabtrigger);
   const [snippet, setSnippet] = useState(urlSnippet);
@@ -93,17 +94,17 @@ const ContextProvider = ({ children }: ProviderProps) => {
   // todo: rename to upsertPlaceholder
   const upsertPlaceholder = (placeholder: Placeholder) => {
     const i = placeholder$.findIndex((v) => v.id === placeholder.id);
-    if(i=== -1) {
+    if (i === -1) {
       setPlaceholder$([...placeholder$, placeholder]);
-    }else{
-      const copy = [...placeholder$]
-      copy[i] = placeholder
-      setPlaceholder$(copy)
-      setCurrentPlaceholder(copy[i])
+    } else {
+      const copy = [...placeholder$];
+      copy[i] = placeholder;
+      setPlaceholder$(copy);
+      setCurrentPlaceholder(copy[i]);
     }
-  };  
+  };
   const removePlaceholder = (placeholder: Placeholder) => {
-    const filtered = placeholder$.filter(v => v.id !== placeholder.id )
+    const filtered = placeholder$.filter((v) => v.id !== placeholder.id);
     setPlaceholder$(filtered);
   };
   useEffect(() => {
@@ -142,8 +143,10 @@ const ContextProvider = ({ children }: ProviderProps) => {
         placeholder$,
         currentPlaceholder,
         setCurrentPlaceholder,
-        upsertPlaceholder,        
-        removePlaceholder
+        upsertPlaceholder,
+        removePlaceholder,
+        placeholderIndex,
+        setPlaceholderIndex,
       }}
     >
       {children}

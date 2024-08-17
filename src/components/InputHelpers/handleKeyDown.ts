@@ -25,10 +25,13 @@ const handleTab = (e: Event, context: MyContext) => {
   context.setSnippet(newValue);
 };
 
+
 const handleInsert = (e: Event, context: MyContext) => {
   e.preventDefault();
-  const { currentPlaceholder } = context;
+  const { currentPlaceholder, placeholderIndex } = context;
   const { value } = currentPlaceholder;
+  const insertValue = value.startsWith("${1") ? `${"${"}${placeholderIndex}${value.substring(3)}`:value
+  const placeHolderIndexCorrection = value.startsWith("${1") ? `${placeholderIndex}`.length - 1 : 0;
   const initialSelectionStart = e.currentTarget.selectionStart;
   const initialSelectionEnd = e.currentTarget.selectionEnd;
   const stringBeforeCaret = e.currentTarget.value.substring(
@@ -40,16 +43,25 @@ const handleInsert = (e: Event, context: MyContext) => {
     initialSelectionEnd + e.currentTarget.textLength
   );
 
-  const newValue = `${stringBeforeCaret}${value}${stringAfterCaret}`;
+  const newValue = `${stringBeforeCaret}${insertValue}${stringAfterCaret}`;
 
   e.currentTarget.value = newValue;
   if (value === "${1:example}") {
-    e.currentTarget.selectionStart = initialSelectionStart + 4;
-    e.currentTarget.selectionEnd = initialSelectionStart + 11;
+    e.currentTarget.selectionStart = initialSelectionStart + 4 + placeHolderIndexCorrection;
+    e.currentTarget.selectionEnd = initialSelectionStart + 11 + placeHolderIndexCorrection;
   }
   context.setSnippet(newValue);
 };
 
+const handleAdd = (context: MyContext) => {
+  const { placeholderIndex, setPlaceholderIndex } = context;
+  setPlaceholderIndex(placeholderIndex + 1);
+};
+
+const handleSubtract = (context: MyContext) => {
+  const { placeholderIndex, setPlaceholderIndex } = context;
+  setPlaceholderIndex(Math.max(placeholderIndex - 1, 0));
+};
 const handleReplace = (e: Event, context: MyContext) => {
   e.preventDefault();
   const selection = window.getSelection()?.toString() ?? "";
@@ -59,6 +71,7 @@ const handleReplace = (e: Event, context: MyContext) => {
 };
 
 const acquireOnKeyDown = (context: MyContext) => (e: Event) => {
+  console.log({ e });
   if (e.key === "Tab") {
     handleTab(e, context);
   }
@@ -69,6 +82,23 @@ const acquireOnKeyDown = (context: MyContext) => (e: Event) => {
   ) {
     handleInsert(e, context);
   }
+  if (
+    e.key === "=" &&
+    (e.ctrlKey || e.metaKey) &&
+    document.activeElement === e.currentTarget
+  ) {
+    handleAdd(context);
+    e.preventDefault();
+  }
+  if (
+    e.key === "-" &&
+    (e.ctrlKey || e.metaKey) &&
+    document.activeElement === e.currentTarget
+  ) {
+    handleSubtract(context);
+    e.preventDefault();
+  }
+
   if (
     e.key === "r" &&
     (e.ctrlKey || e.metaKey) &&

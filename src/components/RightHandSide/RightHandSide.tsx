@@ -1,6 +1,6 @@
 import { Context } from "../Context";
 import { useContext } from "react";
-import EditVariable from "./Edit/EditVariable";
+import EditVariable from "./TransformTab/TransformTab";
 import Output from "./Output";
 import EditPlaceholder from "./EditPlaceholder/EditPlaceholder";
 
@@ -40,7 +40,7 @@ const RightHandSide = () => {
         >
           Transform
         </button>
-        <button
+        {/* <button
           className={
             context.mode === "atom"
               ? "app__button app__button--atom app__button--active"
@@ -49,7 +49,7 @@ const RightHandSide = () => {
           onClick={() => context.setMode("atom")}
         >
           Help
-        </button>
+        </button> */}
       </div>
 
       <div className="app__halfbottom">
