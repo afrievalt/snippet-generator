@@ -293,8 +293,8 @@ body {
   left: 20px;
   right: 20px;
   bottom: 20px;
-  background-color: black;
-  color: whitesmoke;
+  background-color: whitesmoke;
+  color: #001100;
   padding: 20px;
   overflow: scroll;
 }
@@ -336,7 +336,7 @@ body {
   flex-grow: 1;
 }
 
-input[type="radio"] {
+.row input[type="radio"] {
   /* Add if not using autoprefixer */
   -webkit-appearance: none;
   /* Remove most all native input styles */
@@ -358,7 +358,7 @@ input[type="radio"] {
   place-content: center;
 }
 
-input[type="radio"]::before {
+.row input[type="radio"]::before {
   content: "";
   width: 0.65em;
   height: 0.65em;
@@ -370,11 +370,11 @@ input[type="radio"]::before {
   background-color: CanvasText;
 }
 
-input[type="radio"]:checked::before {
+.row input[type="radio"]:checked::before {
   transform: scale(1);
 }
 
-input[type="radio"]:focus {
+.row input[type="radio"]:focus {
   outline: 1px solid currentColor;
   outline-offset: -1px;
 }
