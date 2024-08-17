@@ -27,12 +27,8 @@ const handleTab = (e: Event, context: MyContext) => {
 
 const handleInsert = (e: Event, context: MyContext) => {
   e.preventDefault();
-  console.log(
-    "%c >>>",
-    "background: #222; color: #bada55",
-    //context.insertVarValue
-  );
-
+  const { currentPlaceholder } = context;
+  const { value } = currentPlaceholder;
   const initialSelectionStart = e.currentTarget.selectionStart;
   const initialSelectionEnd = e.currentTarget.selectionEnd;
   const stringBeforeCaret = e.currentTarget.value.substring(
@@ -44,12 +40,13 @@ const handleInsert = (e: Event, context: MyContext) => {
     initialSelectionEnd + e.currentTarget.textLength
   );
 
-  const newValue = `${stringBeforeCaret}${context.currentPlaceholder.value}${stringAfterCaret}`;
+  const newValue = `${stringBeforeCaret}${value}${stringAfterCaret}`;
 
-  e.currentTarget.value = newValue;  
-//  e.currentTarget.selectionStart = initialSelectionStart + 4;
-//  e.currentTarget.selectionEnd = initialSelectionStart + 11;
-
+  e.currentTarget.value = newValue;
+  if (value === "${1:example}") {
+    e.currentTarget.selectionStart = initialSelectionStart + 4;
+    e.currentTarget.selectionEnd = initialSelectionStart + 11;
+  }
   context.setSnippet(newValue);
 };
 
@@ -79,9 +76,7 @@ const acquireOnKeyDown = (context: MyContext) => (e: Event) => {
   ) {
     handleReplace(e, context);
   }
-  context.setMode("vscode")
+  context.setMode("vscode");
 };
 
 export { acquireOnKeyDown };
-
-

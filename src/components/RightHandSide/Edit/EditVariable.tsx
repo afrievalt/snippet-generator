@@ -55,17 +55,6 @@ function EditVariable(props: Props) {
   };
   return (
     <div className="app_placeholder">
-      <div>
-        <label>
-          <span>Variable</span>
-          <input
-            value={form?.variable}
-            onChange={acquireOnChange("variable")}
-          />
-          <button onClick={handleInsertVariable}>Insert</button>
-        </label>
-        <VariableForm onSelect={handleSelect} />
-      </div>
       <TextInput
         id="variable"
         label="Variable"
