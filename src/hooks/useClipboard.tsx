@@ -3,10 +3,15 @@ import { useState, useCallback, useEffect } from "react";
 /**
  * Custom React hook for managing clipboard state.
  * @param initialValue - The initial value to be stored in the clipboard.
+ * @param allowClipboardReadAccess - When false(default), clipboardValue will 
+ * only get updated with called through this hook.  When true, end user will be
+ * prompted to "Allow Clipboard Read Access". 
+ * 
  * @returns A tuple containing the current value and a setter function.
  */
 function useClipboard(
-  initialValue: string
+  initialValue: string,
+  allowClipboardReadAccess = true
 ): [string, (value: string | ((val: string) => string)) => Promise<void>] {
   const [clipboardValue, setClipboardValue] = useState<string>(initialValue);
 
@@ -45,8 +50,10 @@ function useClipboard(
   );
 
   useEffect(() => {
-    readClipboard();
-  }, [readClipboard]);
+    if (allowClipboardReadAccess) {
+      readClipboard();
+    }
+  }, [readClipboard, allowClipboardReadAccess]);
 
   return [clipboardValue, setClipboard];
 }
