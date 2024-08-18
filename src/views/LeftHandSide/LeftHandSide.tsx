@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { Context } from "./Context";
-import Info from "./Info";
-import { acquireOnKeyDown } from "./InputHelpers/handleKeyDown";
+import { Context } from "../../store/Context";
+import Info from "../Info";
+import { acquireOnKeyDown } from "./handleKeyDown";
 
-const Input = () => {
+const LeftHandSide = () => {
   const context = useContext(Context);
 
   return (
@@ -55,4 +55,4 @@ const Input = () => {
   );
 };
 
-export default Input;
+export default LeftHandSide;

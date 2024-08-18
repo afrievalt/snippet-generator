@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-import { Context } from "../../Context";
+import { Context } from "../../../store/Context";
 import VariableForm, {
   VARIABLE_FORM_ID,
-} from "../../Placeholders/VariableForm";
-import { CopyToClipboard } from "../../_shared/CopyToClipboard";
+} from "../../ChooseVariable/VariableForm";
+import { CopyToClipboard } from "../../../components/CopyToClipboard";
 import { getUUID } from "../../../util/getUUID";
-import TextInput from "../../_shared/TextInput";
+import TextInput from "../../../components/TextInput";
 
 type Props = {
   show: boolean;

@@ -1,4 +1,4 @@
-import { Context } from "../Context";
+import { Context } from "../../store/Context";
 import { useContext } from "react";
 import EditVariable from "./TransformTab/TransformTab";
 import Output from "./Output";

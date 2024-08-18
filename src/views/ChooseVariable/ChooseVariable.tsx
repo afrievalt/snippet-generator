@@ -1,5 +1,5 @@
 import { ChangeEvent, useContext } from "react";
-import { Context } from "../Context";
+import { Context } from "../../store/Context";
 import { variables } from "./variables";
 
 function ChooseVariable() {
@@ -11,7 +11,7 @@ function ChooseVariable() {
   return (
     <fieldset>
       {variables.map((row) => (
-        <div key={row.variable} className="item inline" >
+        <div key={row.variable} className="item inline">
           <input
             checked={context.variable === row.variable}
             onChange={handleChange}
@@ -20,9 +20,7 @@ function ChooseVariable() {
             name="variable"
             value={row.variable}
           />
-          <label htmlFor={row.variable}>
-            {row.variable}
-          </label>
+          <label htmlFor={row.variable}>{row.variable}</label>
           <div className="variables__description">{row.description}</div>
         </div>
       ))}

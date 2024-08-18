@@ -1,16 +1,17 @@
 import { useContext } from "react";
-import { Context } from "./Context";
-import { VARIABLE_FORM_ID } from "./Placeholders/VariableForm";
+import { Context } from "../store/Context";
+import { VARIABLE_FORM_ID } from "./ChooseVariable/VariableForm";
 
 const Info = () => {
   const context = useContext(Context);
   const { currentPlaceholder, placeholderIndex } = context;
   const { value } = currentPlaceholder;
-  const insertValue = value.startsWith("${1") ? `${"${"}${placeholderIndex}${value.substring(3)}`:value
-  
-  
+  const insertValue = value.startsWith("${1")
+    ? `${"${"}${placeholderIndex}${value.substring(3)}`
+    : value;
+
   const platformKey = navigator.platform === "MacIntel" ? "⌘" : "ctrl";
-  const showEdit = () => context.setModalIndex(VARIABLE_FORM_ID)
+  const showEdit = () => context.setModalIndex(VARIABLE_FORM_ID);
   return (
     <p className="app__info">
       ({platformKey} + i):{" "}
@@ -25,11 +26,7 @@ const Info = () => {
         More info
       </a>
       |
-      <a
-        className="app__infolink"
-        onClick={showEdit}
-        href="#"        
-      >
+      <a className="app__infolink" onClick={showEdit} href="#">
         Edit
       </a>
     </p>

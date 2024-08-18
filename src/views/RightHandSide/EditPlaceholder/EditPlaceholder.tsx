@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import { Context, Placeholder } from "../../Context";
-import { Div } from "../../Div";
+import { Context, Placeholder } from "../../../store/Context";
+import { Div } from "../../../components/Div";
 import VariableForm, {
   VARIABLE_FORM_ID,
-} from "../../Placeholders/VariableForm";
-import { descriptionLookup } from "../../Placeholders/variables";
+} from "../../ChooseVariable/VariableForm";
+import { descriptionLookup } from "../../ChooseVariable/variables";
 import { PlaceholderList } from "./PlaceholderList";
 import { PlaceholderForm } from "./PlaceholderForm";
 import { getUUID } from "../../../util/getUUID";

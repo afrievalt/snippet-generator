@@ -1,5 +1,5 @@
 import { ChangeEvent, useContext } from "react";
-import { Context } from "../../Context";
+import { Context } from "../../../store/Context";
 
 function PlaceholderList() {
   const context = useContext(Context);
@@ -7,7 +7,7 @@ function PlaceholderList() {
     const { target } = e;
     const { checked, value } = target;
     if (checked) {
-      const ph = context.placeholder$.find(v=>v.id === value)
+      const ph = context.placeholder$.find((v) => v.id === value);
       ph && context.setCurrentPlaceholder(ph);
     }
   };
@@ -18,16 +18,16 @@ function PlaceholderList() {
         return (
           <div key={row.id} className="row">
             <label className="form-control">
-            <input
-              type="radio"
-              checked={row.id === currentPlaceholder.id}
-              id={row.id}
-              name="insert"
-              value={row.id}
-              onChange={handleRadio}
-            />
+              <input
+                type="radio"
+                checked={row.id === currentPlaceholder.id}
+                id={row.id}
+                name="insert"
+                value={row.id}
+                onChange={handleRadio}
+              />
               {row.value}
-            </label>            
+            </label>
             <div className="subtext">{row.description}</div>
           </div>
         );

@@ -1,4 +1,4 @@
-import { MyContext } from "../Context";
+import { MyContext } from "../../store/Context";
 
 type Event = React.KeyboardEvent<HTMLTextAreaElement>;
 
@@ -25,13 +25,16 @@ const handleTab = (e: Event, context: MyContext) => {
   context.setSnippet(newValue);
 };
 
-
 const handleInsert = (e: Event, context: MyContext) => {
   e.preventDefault();
   const { currentPlaceholder, placeholderIndex } = context;
   const { value } = currentPlaceholder;
-  const insertValue = value.startsWith("${1") ? `${"${"}${placeholderIndex}${value.substring(3)}`:value
-  const placeHolderIndexCorrection = value.startsWith("${1") ? `${placeholderIndex}`.length - 1 : 0;
+  const insertValue = value.startsWith("${1")
+    ? `${"${"}${placeholderIndex}${value.substring(3)}`
+    : value;
+  const placeHolderIndexCorrection = value.startsWith("${1")
+    ? `${placeholderIndex}`.length - 1
+    : 0;
   const initialSelectionStart = e.currentTarget.selectionStart;
   const initialSelectionEnd = e.currentTarget.selectionEnd;
   const stringBeforeCaret = e.currentTarget.value.substring(
@@ -47,8 +50,10 @@ const handleInsert = (e: Event, context: MyContext) => {
 
   e.currentTarget.value = newValue;
   if (value === "${1:example}") {
-    e.currentTarget.selectionStart = initialSelectionStart + 4 + placeHolderIndexCorrection;
-    e.currentTarget.selectionEnd = initialSelectionStart + 11 + placeHolderIndexCorrection;
+    e.currentTarget.selectionStart =
+      initialSelectionStart + 4 + placeHolderIndexCorrection;
+    e.currentTarget.selectionEnd =
+      initialSelectionStart + 11 + placeHolderIndexCorrection;
   }
   context.setSnippet(newValue);
 };

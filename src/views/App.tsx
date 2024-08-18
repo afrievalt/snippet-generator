@@ -1,5 +1,5 @@
 import Header from "./Header";
-import Input from "./Input";
+import LeftHandSide from "./LeftHandSide/LeftHandSide";
 import { RightHandSide } from "./RightHandSide/RightHandSide";
 
 const App = () => {
@@ -7,7 +7,7 @@ const App = () => {
     <div className={`app app--vscode`}>
       <Header />
       <div className="app__main">
-        <Input />
+        <LeftHandSide />
         <RightHandSide />
       </div>
     </div>

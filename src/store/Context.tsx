@@ -77,7 +77,7 @@ const defaultPlaceholder$ = [
 ];
 
 const ContextProvider = ({ children }: ProviderProps) => {
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [placeholderIndex, setPlaceholderIndex] = useState(1);
   const [description, setDescription] = useState(urlDescription);
   const [tabTrigger, setTabTrigger] = useState(urlTabtrigger);
   const [snippet, setSnippet] = useState(urlSnippet);
